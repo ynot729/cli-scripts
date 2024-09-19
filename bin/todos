@@ -1,0 +1,21 @@
+#!/usr/bin/env -S deno run --allow-run --allow-read --ext=ts
+const cmd = new Deno.Command("git", { args: ["--no-pager", "diff", "main"] });
+const { code, stdout, stderr } = await cmd.output();
+// if (stderr) console.log(new TextDecoder().decode(stdout));
+const output = new TextDecoder().decode(stdout);
+const lines = output.split("\n");
+let lastFile = "";
+let lastPrintedFile = "";
+for (const line of lines) {
+	if (line.match(/^\+\+\+/)) lastFile = line.replace(/^\+\+\+ b/, ".");
+	if (!line.match(/^\+/)) continue; //ignore the line if we are not adding the line
+	if (!line.match(/TODO/)) continue; //ignore the line if it doesn't have a todo
+	if (lastFile != lastPrintedFile) {
+		console.log(lastFile);
+		lastPrintedFile = lastFile;
+	}
+	let cleanLine = line
+		.replace(/^\+\s*/, "%c") //remove leading + and spaces
+		.replace("TODO", "%cTODO"); //add the color
+	console.log(`	${cleanLine}`, "color:gray", "color:initial");
+}
