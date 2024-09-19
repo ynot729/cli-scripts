@@ -17,6 +17,5 @@ export PATH="$HOME/Documents/Dev/cli-scripts/bin:$PATH"
 
 Runs a diff between current branch and main and finds all the new TODOs
 
-```bash
-todos
-```
+<img width="559" alt="image" src="https://github.com/user-attachments/assets/a99e57c7-87a6-4a4c-a5fc-970db6b0934e">
+
