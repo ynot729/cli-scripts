@@ -14,8 +14,14 @@ for (const line of lines) {
 		console.log(lastFile);
 		lastPrintedFile = lastFile;
 	}
-	let cleanLine = line
-		.replace(/^\+\s*/, "%c") //remove leading + and spaces
-		.replace("TODO", "%cTODO"); //add the color
-	console.log(`	${cleanLine}`, "color:gray", "color:initial");
+
+	let beforeTodo = line.match(/^.*TODO/)[0];
+	const theTodo = line
+		.replace(beforeTodo, "")
+		.replace(/^:?\s*/, "")
+		.trim();
+	beforeTodo = beforeTodo.replace(/^\+.*TODO/, "");
+	let todoColor = "red";
+	if (line.match(/POS\-/)) todoColor = "yellow";
+	console.log(`	=> %c${theTodo} %c${beforeTodo}`, `color:${todoColor}`, "color:gray");
 }
